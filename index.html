@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JET Programme Application Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FA49C5;
+            --primary-light: #FF73F6;
+            --secondary: #F29CFF;
+            --accent: #f472b6;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-weight: 400;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            letter-spacing: 0.02em;
+        }
+
+        /* Animated background */
+        .background-blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+        }
+
+        .blob-1 {
+            width: 800px;
+            height: 800px;
+            background: rgba(34, 211, 238, 0.5); /* var(--primary) */
+            top: -50%;
+            left: -50%;
+            animation: animate-blob-1 35s infinite alternate;
+        }
+
+        .blob-2 {
+            width: 600px;
+            height: 600px;
+            background: rgba(167, 139, 250, 0.5); /* var(--secondary) */
+            bottom: -50%;
+            right: -50%;
+            animation: animate-blob-2 28s infinite alternate;
+        }
+        
+        .blob-3 {
+            width: 500px;
+            height: 500px;
+            background: rgba(244, 72, 182, 0.5); /* var(--accent) */
+            bottom: 20%;
+            right: 20%;
+            animation: animate-blob-3 42s infinite alternate;
+        }
+
+        @keyframes animate-blob-1 {
+            from {
+                transform: rotate(0deg) scale(1) translateX(-20%);
+            }
+            to {
+                transform: rotate(360deg) scale(1.2) translateX(20%);
+            }
+        }
+
+        @keyframes animate-blob-2 {
+            from {
+                transform: rotate(0deg) scale(1.2) translateY(-20%);
+            }
+            to {
+                transform: rotate(360deg) scale(1) translateY(20%);
+            }
+        }
+
+        @keyframes animate-blob-3 {
+            from {
+                transform: rotate(0deg) scale(1) translateY(10%);
+            }
+            to {
+                transform: rotate(360deg) scale(1.3) translateY(-10%);
+            }
+        }
+
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative; /* Ensure container is above the background blobs */
+            z-index: 1;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: transparent;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            vertical-align: middle;
+            transition: all 0.3s ease;
+        }
+
+        tr {
+            transition: all 0.3s ease;
+        }
+
+        tr:hover {
+            background: rgba(0, 0, 0, 0.02);
+            transform: translateY(-2px);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .week-spacer td {
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--secondary);
+            background-color: rgba(167, 139, 250, 0.08);
+            padding: 0.75rem;
+        }
+        
+        tr.week-spacer:hover {
+            background: rgba(167, 139, 250, 0.08);
+            transform: translateY(0);
+            cursor: default;
+        }
+
+        /* Drag Handle */
+        .drag-handle {
+            cursor: grab;
+            text-align: center;
+            color: rgba(0, 0, 0, 0.3);
+            width: 40px;
+            font-size: 1.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .drag-handle:hover {
+            color: var(--secondary);
+            transform: scale(1.2);
+        }
+
+        tr.dragging {
+            opacity: 0.7;
+            background: var(--bg-white);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Editable Content */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+            position: relative;
+            transition: all 0.2s ease;
+            font-weight: 300;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 6px;
+        }
+
+        [contenteditable="true"]:focus {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 6px;
+            padding: 0.25rem 0.5rem;
+            margin: -0.25rem -0.5rem;
+            box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.5);
+        }
+
+        /* Checkbox Styles */
+        .checkbox-container {
+            text-align: center; /* Use text-align for horizontal centering in a TD */
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            background: rgba(0, 0, 0, 0.04);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        input[type="checkbox"]:hover {
+            background: rgba(0, 0, 0, 0.08);
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="checkbox"]:checked {
+            background: var(--success);
+            border-color: var(--success);
+            animation: checkPulse 0.4s ease;
+        }
+
+        @keyframes checkPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            color: white;
+            font-size: 12px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Countdown Styles */
+        .countdown-overdue { 
+            color: var(--danger);
+            font-weight: 500;
+        }
+        .countdown-today { 
+            color: var(--warning);
+            font-weight: 500;
+        }
+        .countdown-soon { 
+            color: var(--text-light);
+            font-weight: 300;
+        }
+
+        .countdown-done {
+            color: var(--success);
+            font-weight: 600;
+            text-decoration: none; /* remove line-through from this specific element */
+        }
+
+        /* Completed Task Styles */
+        tr.task-done {
+            background-color: rgba(34, 197, 94, 0.08);
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+        tr.task-done:hover {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        tr.task-done [data-field="task"],
+        tr.task-done [data-field="assignee"] .assignee-tag,
+        tr.task-done [data-field="category"] .category-pill,
+        tr.task-done [data-field="dueDate"] {
+            color: var(--text-light);
+        }
+
+        /* Assignee Tags */
+        .assignee-tag {
+            padding: 0.375rem 0.875rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-block;
+            letter-spacing: 0.025em;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .assignee-you { background-color: rgba(103, 232, 249, 0.2); color: #0891b2; border-color: rgba(103, 232, 249, 0.3); }
+
+        /* Delete Button */
+        .delete-btn {
+            background: none;
+            border: none;
+            color: rgba(0, 0, 0, 0.3);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .delete-btn:hover {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Loader */
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            gap: 1.5rem;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-text {
+            color: var(--text-light);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--text-light);
+            font-size: 0.875rem;
+            padding: 1.5rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5rem; }
+            .container { padding: 1rem; }
+            th, td { padding: 0.75rem 0.5rem; font-size: 0.875rem; }
+            .table-container { overflow-x: auto; }
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.7), rgba(167, 139, 250, 0.7));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: none;
+        }
+
+        /* Category Pills */
+        .category-pill {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-light);
+            display: inline-block;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-dark);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.info { border-left: 4px solid var(--primary); }
+
+        /* Confirmation Modal */
+        #delete-modal.show {
+            display: flex;
+        }
+        #delete-modal.show > div { /* Target the inner div for animation */
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Modal Buttons */
+        .modal-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .modal-btn-cancel {
+            background-color: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+            color: var(--text-light);
+        }
+        .modal-btn-cancel:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        .modal-btn-confirm {
+            background-color: rgba(239, 68, 68, 0.8);
+            color: white;
+        }
+        .modal-btn-confirm:hover {
+            background-color: rgba(239, 68, 68, 1);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <div id="app-container" class="container">
+        <header class="header">
+            <h1>JET Programme Application Tracker</h1>
+            <p>Your Step-by-Step Guide to a Successful Application</p>
+        </header>
+
+        <div id="loader" class="loader-container">
+            <div class="loader"></div>
+            <p class="loader-text">Loading your action plan...</p>
+        </div>
+
+        <main id="main-content" class="hidden">
+            <div class="glass-card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="w-12"></th>
+                                <th class="w-2/5">Task</th>
+                                <th class="w-1/6">Assignee</th>
+                                <th class="w-1/6">Category</th>
+                                <th class="w-1/6">Due Date</th>
+                                <th class="text-center">Done?</th>
+                                <th class="w-1/6">Countdown</th>
+                                <th class="w-12"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="task-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>User ID: <span id="user-id"></span> | App ID: <span id="app-id"></span></p>
+        </footer>
+    </div>
+
+    <button id="add-task-btn" class="fab">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Task updated successfully</span>
+    </div>
+
+    <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm items-center justify-center z-[1001] hidden">
+        <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md m-4 text-center transform transition-all duration-300 ease-out scale-95 opacity-0">
+            <i class="fas fa-exclamation-triangle text-4xl text-danger mb-4 text-red-500"></i>
+            <h3 class="text-xl font-semibold text-text-dark mb-2">Are you sure?</h3>
+            <p class="text-text-light mb-6">This action cannot be undone. The task will be permanently deleted.</p>
+            <div class="flex justify-center gap-4">
+                <button id="cancel-delete-btn" class="modal-btn modal-btn-cancel">Cancel</button>
+                <button id="confirm-delete-btn" class="modal-btn modal-btn-confirm">Delete Task</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, addDoc, deleteDoc, getDocs, writeBatch, serverTimestamp, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- CONFIG & INITIALIZATION ---
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'jet-nz-application-2026';
+        // This is your actual Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyD5Xqmc14gQ0EjciQGu-Mja6Ty5zreWh_M",
+          authDomain: "cgra-project.firebaseapp.com",
+          projectId: "cgra-project",
+          storageBucket: "cgra-project.firebasestorage.app",
+          messagingSenderId: "1035486354692",
+          appId: "1:1035486354692:web:74c6419f73c3efc1414451"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- UI ELEMENTS ---
+        const taskTableBody = document.getElementById('task-table-body');
+        const addTaskBtn = document.getElementById('add-task-btn');
+        const loader = document.getElementById('loader');
+        const mainContent = document.getElementById('main-content');
+        const userIdSpan = document.getElementById('user-id');
+        const appIdSpan = document.getElementById('app-id');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        const deleteModal = document.getElementById('delete-modal');
+        const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+        const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+
+        // --- STATE ---
+        let docRefToDelete = null;
+
+        // --- INITIAL DATA ---
+        const initialTasks = [
+            // --- Week 1: Foundation & Outreach (Due by Friday, 24 Oct 2025) ---
+            { task: '📖 Thoroughly re-read the entire 2026 JET Application Guidelines PDF.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 0 },
+            { task: '👥 Identify two suitable referees (one academic). Confirm their current contact details.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 1 },
+            { task: '📝 Draft a polite email to referees explaining the JET Programme, the letter requirements (hand-signed, on letterhead), and the deadline of Oct 31.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 2 },
+            { task: '📎 Attach your CV and draft Statement of Purpose to the referee email.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 3 },
+            { task: '📧 Send the drafted email to both of your chosen referees.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 4 },
+            { task: '📂 Create a dedicated folder on your computer for all digital JET documents.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 5 },
+            { task: '🎓 Request official academic transcript from university (select both digital and physical delivery).', assignee: 'You', category: 'Official Docs', dueDate: '2025-10-24', done: false, order: 6 },
+            { task: '📜 Request official "Letter of Expected Graduation" from university department (must be on letterhead).', assignee: 'You', category: 'Official Docs', dueDate: '2025-10-24', done: false, order: 7 },
+            { task: '🚓 Apply for your "Full Record of Convictions" from the Ministry of Justice website.', assignee: 'You', category: 'Official Docs', dueDate: '2025-10-24', done: false, order: 8 },
+            { task: '✍️ Brainstorm and write the first full draft of your Statement of Purpose essay.', assignee: 'You', category: 'Essay', dueDate: '2025-10-26', done: false, order: 9 },
+
+            // --- Week 2: Document Finalization & Digital Submission (Due by Friday, 31 Oct 2025) ---
+            { task: '📨 Send a gentle follow-up email to referees if you have not heard back from them.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-28', done: false, order: 10 },
+            { task: '📍 Find a local Justice of the Peace (JP) and confirm their walk-in hours for next week.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-29', done: false, order: 11 },
+            { task: '🧐 Edit and refine your Statement of Purpose for content, clarity, and flow.', assignee: 'You', category: 'Essay', dueDate: '2025-10-29', done: false, order: 12 },
+            { task: '👀 Proofread the essay for spelling/grammar and ask a friend to review it.', assignee: 'You', category: 'Essay', dueDate: '2025-10-30', done: false, order: 13 },
+            { task: '✅ Finalize the essay, ensuring it meets ALL formatting requirements (A4, double-spaced, 12pt Times New Roman, max 2 pages).', assignee: 'You', category: 'Essay', dueDate: '2025-10-31', done: false, order: 14 },
+            { task: '💻 Fill out the Application Form & Medical Report PDFs in Adobe Reader. Double-check all fields.', assignee: 'You', category: 'Digital Submission', dueDate: '2025-10-31', done: false, order: 15 },
+            { task: '📤 Email the completed Application Form PDF to jet@wl.mofa.go.jp with the correct subject line.', assignee: 'You', category: 'Digital Submission', dueDate: '2025-10-31', done: false, order: 16 },
+            { task: '🔗 Share digital transcript/graduation docs via MyeQuals to jet@wl.mofa.go.jp (set NO EXPIRY date).', assignee: 'You', category: 'Digital Submission', dueDate: '2025-10-31', done: false, order: 17 },
+            { task: '📥 Wait for and file the email confirmation for your digital submission from the JET office.', assignee: 'You', category: 'Digital Submission', dueDate: '2025-10-31', done: false, order: 18 },
+
+            // --- Week 3: Physical Assembly & Final Submission (Due by Wednesday, 05 Nov 2025) ---
+            { task: '🤝 Collect the two original, hand-signed reference letters from your referees.', assignee: 'You', category: 'Physical Assembly', dueDate: '2025-11-03', done: false, order: 19 },
+            { task: '⚖️ Visit the JP to get certified copies of your Passport, JLPT cert, transcript, and graduation cert.', assignee: 'You', category: 'Physical Assembly', dueDate: '2025-11-03', done: false, order: 20 },
+            { task: '🖨️ Print all documents for your ONE ORIGINAL SET (signed forms, essay, printed digital docs).', assignee: 'You', category: 'Physical Assembly', dueDate: '2025-11-04', done: false, order: 21 },
+            { task: '📜 Lay out the complete ORIGINAL SET in the correct order specified on page 11 of the guidelines.', assignee: 'You', category: 'Physical Assembly', dueDate: '2025-11-04', done: false, order: 22 },
+            { task: '📠 Make THREE complete, single-sided, high-quality photocopies of the entire original set.', assignee: 'You', category: 'Physical Assembly', dueDate: '2025-11-04', done: false, order: 23 },
+            { task: '🖍️ Write "ORIGINAL" in red pen on the top-right corner of the original application form\'s first page.', assignee: 'You', category: 'Final Submission', dueDate: '2025-11-05', done: false, order: 24 },
+            { task: '📎 Fasten EACH of the four sets with a separate paper clip. DO NOT STAPLE.', assignee: 'You', category: 'Final Submission', dueDate: '2025-11-05', done: false, order: 25 },
+            { task: '📁 Purchase an L-shaped clear plastic folder and place all four clipped sets inside (original on top).', assignee: 'You', category: 'Final Submission', dueDate: '2025-11-05', done: false, order: 26 },
+            { task: '✈️ Courier or hand-deliver the completed application package to the Embassy of Japan in Wellington.', assignee: 'You', category: 'Final Submission', dueDate: '2025-11-05', done: false, order: 27 },
+            { task: '🎉 CELEBRATE! Your application is submitted. Wait for the final physical receipt email.', assignee: 'You', category: 'Final Submission', dueDate: '2025-11-05', done: false, order: 28 }
+        ];
+
+
+        // --- HELPER FUNCTIONS ---
+        const getWeekNumber = (dateString) => {
+            if (!dateString) return null;
+            const startDate = new Date('2025-10-20'); // Monday of the first week
+            const taskDate = new Date(dateString + 'T12:00:00Z');
+            const diffTime = taskDate - startDate;
+            const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
+            return 1 + diffWeeks;
+        };
+
+        /**
+         * Checks if a given date falls within New Zealand Daylight Time (NZDT).
+         * NZDT starts at 2 AM (NZST) on the last Sunday of September.
+         * NZDT ends at 3 AM (NZDT) on the first Sunday of April.
+         * @param {Date} date - The date to check.
+         * @returns {boolean} - True if the date is in NZDT.
+         */
+        const isNZDT = (date) => {
+            const year = date.getFullYear();
+            
+            // Find the last Sunday of September for the given year
+            const lastDayOfSep = new Date(year, 9, 0); // Month is 0-indexed, 9 is October. Day 0 gives last day of previous month (September)
+            const lastSundayOfSep = new Date(lastDayOfSep);
+            lastSundayOfSep.setDate(lastDayOfSep.getDate() - lastDayOfSep.getDay()); // Find the preceding Sunday
+            lastSundayOfSep.setHours(2, 0, 0, 0); // NZDT starts at 2 AM NZST
+
+            // Find the first Sunday of April for the given year
+            const firstDayOfApril = new Date(year, 3, 1); // Month 3 is April
+            const firstSundayOfApril = new Date(firstDayOfApril);
+            firstSundayOfApril.setDate(1 + (7 - firstDayOfApril.getDay()) % 7); // Find the following Sunday
+            firstSundayOfApril.setHours(3, 0, 0, 0); // NZDT ends at 3 AM NZDT
+
+            return date >= lastSundayOfSep || date < firstSundayOfApril;
+        };
+        
+        /**
+         * Calculates the time remaining until a due date, based on New Zealand time.
+         * It correctly handles the switch between NZST (UTC+12) and NZDT (UTC+13).
+         * @param {string} dueDateStr - The due date in 'YYYY-MM-DD' format.
+         * @returns {object} - An object with the display text and a CSS class name.
+         */
+        const calculateCountdown = (dueDateStr) => {
+            if (!dueDateStr) return { text: '', className: '' };
+
+            // Create a date object from the string to perform the timezone check.
+            // Using midday (12:00Z) avoids any edge cases with DST transitions.
+            const checkDate = new Date(dueDateStr + 'T12:00:00Z'); 
+            
+            const isDaylightTime = isNZDT(checkDate);
+
+            // Determine the correct UTC hour that corresponds to the end of the day (23:59:59) in New Zealand.
+            // NZST (UTC+12): 23:59:59 NZST is 11:59:59 UTC.
+            // NZDT (UTC+13): 23:59:59 NZDT is 10:59:59 UTC.
+            const utcHourForEndOfDay = isDaylightTime ? 10 : 11; 
+
+            // Create the precise deadline in UTC.
+            const due = new Date(`${dueDateStr}T${String(utcHourForEndOfDay).padStart(2, '0')}:59:59Z`);
+
+            // Get the current time from the user's browser.
+            const now = new Date(); 
+            const diffTime = due - now;
+
+            // Overdue
+            if (diffTime < 0) {
+                const overdueDays = Math.ceil(Math.abs(diffTime) / (1000 * 60 * 60 * 24));
+                return { text: `Overdue by ${overdueDays} day${overdueDays !== 1 ? 's' : ''}`, className: 'countdown-overdue' };
+            }
+
+            const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diffTime % (1000 * 60)) / 1000);
+
+            if (days > 0) {
+                return { text: `in ${days} day${days !== 1 ? 's' : ''}`, className: 'countdown-soon' };
+            }
+            
+            // Less than a day left, show the H:M:S timer.
+            const pad = (num) => num.toString().padStart(2, '0');
+            return { text: `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`, className: 'countdown-today' };
+        };
+        
+        const getAssigneeClass = (assignee) => {
+            switch (assignee?.toLowerCase()) {
+                case 'you': return 'assignee-you';
+                default: return 'bg-gray-600 text-gray-100';
+            }
+        };
+
+        const showToast = (message, type = 'success') => {
+            toastMessage.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            const icon = toast.querySelector('i');
+            if (type === 'success') { icon.className = 'fas fa-check-circle'; } 
+            else if (type === 'error') { icon.className = 'fas fa-exclamation-circle'; } 
+            else if (type === 'info') { icon.className = 'fas fa-info-circle'; }
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        };
+
+        // --- CORE LOGIC ---
+        async function main() {
+            try {
+                // When using a specific Firebase project, we must use its own auth methods.
+                // The `__initial_auth_token` is for the environment's default project, so we'll sign in anonymously instead.
+                await signInAnonymously(auth);
+            } catch (error) {
+                console.error("Authentication failed:", error);
+                let errorMessage = `<p class="text-red-400">Authentication Failed. Please refresh.</p>`;
+                if (error.code === 'auth/configuration-not-found') {
+                    errorMessage = `
+                        <div class="text-left max-w-lg mx-auto bg-red-50 p-4 rounded-lg border border-red-200">
+                            <p class="text-red-600 font-semibold mb-2">Configuration Step Needed</p>
+                            <p class="text-gray-700 text-sm">
+                                This app uses Anonymous sign-in, which needs to be enabled in your Firebase project.
+                            </p>
+                            <ol class="list-decimal list-inside text-sm text-gray-600 mt-2 space-y-1">
+                                <li>Go to the <a href="https://console.firebase.google.com/" target="_blank" class="text-blue-500 underline">Firebase Console</a>.</li>
+                                <li>Select your project (<b>cgra-project</b>).</li>
+                                <li>In the left menu, go to <b>Build > Authentication</b>.</li>
+                                <li>Select the <b>Sign-in method</b> tab.</li>
+                                <li>Click on <b>Anonymous</b> in the provider list and enable it.</li>
+                            </ol>
+                        </div>
+                    `;
+                }
+                loader.innerHTML = `<div class="text-center"><i class="fas fa-exclamation-triangle text-4xl text-red-400 mb-4"></i>${errorMessage}</div>`;
+                return;
+            }
+            const userId = auth.currentUser?.uid || 'anonymous';
+            userIdSpan.textContent = userId;
+            appIdSpan.textContent = appId;
+            const tasksCollectionRef = collection(db, `/artifacts/${appId}/public/data/tasks`);
+            const snapshot = await getDocs(tasksCollectionRef);
+            if (snapshot.empty) {
+                console.log("No tasks found. Populating with initial data...");
+                const batch = writeBatch(db);
+                initialTasks.forEach(task => {
+                    const docRef = doc(tasksCollectionRef);
+                    batch.set(docRef, { ...task, createdAt: serverTimestamp() });
+                });
+                await batch.commit();
+                showToast("Application plan created successfully!", "info");
+            }
+            const q = query(tasksCollectionRef);
+            onSnapshot(q, (snapshot) => {
+                const tasks = [];
+                snapshot.forEach(doc => tasks.push({ id: doc.id, ...doc.data() }));
+                // Sort by due date (ascending). Tasks without a due date go to the bottom.
+                tasks.sort((a, b) => {
+                    if (!a.dueDate) return 1;
+                    if (!b.dueDate) return -1;
+                    return new Date(a.dueDate) - new Date(b.dueDate);
+                });
+                renderTasks(tasks);
+                loader.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            });
+        }
+        
+        function renderTasks(tasks) {
+            taskTableBody.innerHTML = '';
+            let currentWeek = null;
+            tasks.forEach((task, index) => {
+                const taskWeek = getWeekNumber(task.dueDate);
+                if (taskWeek && taskWeek !== currentWeek) {
+                    currentWeek = taskWeek;
+                    const spacerTr = document.createElement('tr');
+                    spacerTr.classList.add('week-spacer');
+                    spacerTr.innerHTML = `<td colspan="8">--- Week ${currentWeek}: Prep Phase ---</td>`;
+                    taskTableBody.appendChild(spacerTr);
+                }
+                const tr = document.createElement('tr');
+                tr.dataset.id = task.id;
+                tr.draggable = true;
+
+                if (task.done) {
+                    tr.classList.add('task-done');
+                }
+
+                tr.style.animationDelay = `${index * 0.05}s`;
+                tr.style.animation = 'fadeIn 0.5s ease-out forwards';
+                
+                const countdown = calculateCountdown(task.dueDate);
+                const countdownHTML = task.done 
+                    ? `<span class="countdown-done">DONE</span>`
+                    : `<span class="countdown ${countdown.className}">${countdown.text}</span>`;
+
+                tr.innerHTML = `
+                    <td class="drag-handle"><i class="fas fa-grip-vertical"></i></td>
+                    <td data-field="task" contenteditable="true">${task.task || ''}</td>
+                    <td data-field="assignee" contenteditable="true"><span class="assignee-tag ${getAssigneeClass(task.assignee)}">${task.assignee || ''}</span></td>
+                    <td data-field="category" contenteditable="true"><span class="category-pill">${task.category || ''}</span></td>
+                    <td data-field="dueDate" contenteditable="true">${task.dueDate || ''}</td>
+                    <td class="checkbox-container"><input type="checkbox" ${task.done ? 'checked' : ''} data-field="done"></td>
+                    <td>${countdownHTML}</td>
+                    <td><button class="delete-btn" title="Delete Task"><i class="fas fa-trash-alt"></i></button></td>`;
+                taskTableBody.appendChild(tr);
+            });
+        }
+        
+        // --- EVENT LISTENERS ---
+        addTaskBtn.addEventListener('click', async () => {
+             const tasksCollectionRef = collection(db, `/artifacts/${appId}/public/data/tasks`);
+             const numTasks = taskTableBody.querySelectorAll('tr:not(.week-spacer)').length;
+             await addDoc(tasksCollectionRef, {
+                 task: '🚀 New Task',
+                 assignee: 'You',
+                 category: 'General',
+                 dueDate: new Date().toISOString().split('T')[0],
+                 done: false,
+                 createdAt: serverTimestamp(),
+                 order: numTasks 
+             });
+             showToast("New task added successfully", "success");
+        });
+        
+        taskTableBody.addEventListener('focusout', (e) => {
+             if (e.target.isContentEditable) {
+                 const id = e.target.closest('tr').dataset.id;
+                 const field = e.target.dataset.field;
+                 let value = e.target.innerText;
+                 const docRef = doc(db, `/artifacts/${appId}/public/data/tasks/${id}`);
+                 updateDoc(docRef, { [field]: value });
+                 showToast("Task updated successfully", "success");
+             }
+        });
+
+        taskTableBody.addEventListener('change', (e) => {
+            if (e.target.type === 'checkbox') {
+                const tr = e.target.closest('tr');
+                if (!tr) return;
+
+                const id = tr.dataset.id;
+                const value = e.target.checked;
+                const countdownCell = tr.children[6]; // 7th cell is the countdown
+
+                // Update Firestore
+                const docRef = doc(db, `/artifacts/${appId}/public/data/tasks/${id}`);
+                updateDoc(docRef, { done: value });
+                showToast(value ? "Task marked as complete" : "Task marked as incomplete", value ? "success" : "info");
+
+                // Immediately update UI
+                if (value) {
+                    tr.classList.add('task-done');
+                    if (countdownCell) {
+                        countdownCell.innerHTML = `<span class="countdown-done">DONE</span>`;
+                    }
+                } else {
+                    tr.classList.remove('task-done');
+                    if (countdownCell) {
+                        const dueDateCell = tr.querySelector('[data-field="dueDate"]');
+                        const countdown = calculateCountdown(dueDateCell.innerText);
+                        countdownCell.innerHTML = `<span class="countdown ${countdown.className}">${countdown.text}</span>`;
+                    }
+                }
+            }
+        });
+
+        taskTableBody.addEventListener('click', (e) => {
+            if (e.target.closest('.delete-btn')) {
+                const id = e.target.closest('tr').dataset.id;
+                docRefToDelete = doc(db, `/artifacts/${appId}/public/data/tasks/${id}`);
+                deleteModal.classList.add('show');
+            }
+        });
+
+        cancelDeleteBtn.addEventListener('click', () => {
+            deleteModal.classList.remove('show');
+            docRefToDelete = null;
+        });
+
+        confirmDeleteBtn.addEventListener('click', async () => {
+            if (docRefToDelete) {
+                await deleteDoc(docRefToDelete);
+                showToast("Task deleted successfully", "info");
+                deleteModal.classList.remove('show');
+                docRefToDelete = null;
+            }
+        });
+
+        deleteModal.addEventListener('click', (e) => {
+            if (e.target === deleteModal) { // Clicked on the background overlay
+                deleteModal.classList.remove('show');
+                docRefToDelete = null;
+            }
+        });
+
+
+        // --- DRAG AND DROP LOGIC ---
+        let draggedItem = null;
+        taskTableBody.addEventListener('dragstart', e => {
+            if(e.target.classList.contains('week-spacer')) { e.preventDefault(); return; }
+            draggedItem = e.target;
+            setTimeout(() => { e.target.classList.add('dragging'); }, 0);
+        });
+        taskTableBody.addEventListener('dragend', e => {
+            if(!draggedItem) return;
+            draggedItem.classList.remove('dragging');
+            
+            // After dropping, re-calculate order and update Firestore
+            const rows = Array.from(taskTableBody.querySelectorAll('tr:not(.week-spacer)'));
+            const batch = writeBatch(db);
+            rows.forEach((row, index) => {
+                const id = row.dataset.id;
+                if (id) {
+                    const docRef = doc(db, `/artifacts/${appId}/public/data/tasks/${id}`);
+                    batch.update(docRef, { order: index });
+                }
+            });
+            batch.commit().then(() => {
+                showToast("Task order updated", "success");
+            }).catch(err => {
+                console.error("Failed to update order: ", err);
+                showToast("Error saving new order", "error");
+            });
+
+            draggedItem = null;
+        });
+        taskTableBody.addEventListener('dragover', e => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(taskTableBody, e.clientY);
+            const currentDraggable = document.querySelector('.dragging');
+            if(!currentDraggable) return;
+            if (afterElement == null) { taskTableBody.appendChild(currentDraggable); } 
+            else { taskTableBody.insertBefore(currentDraggable, afterElement); }
+        });
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('tr:not(.dragging):not(.week-spacer)')];
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) { return { offset: offset, element: child }; } 
+                else { return closest; }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+        
+        // This 'drop' event listener might be redundant if dragend handles the logic, but we'll keep it simple.
+        taskTableBody.addEventListener('drop', e => {
+            e.preventDefault();
+        });
+
+        // Re-calculate countdowns every second for detailed timer
+        setInterval(() => {
+            document.querySelectorAll('#task-table-body tr:not(.week-spacer)').forEach(tr => {
+                const checkbox = tr.querySelector('input[type="checkbox"]');
+                // If task is done, skip countdown update
+                if (checkbox && checkbox.checked) {
+                    return;
+                }
+                
+                const dueDateCell = tr.querySelector('[data-field="dueDate"]');
+                const countdownSpan = tr.querySelector('.countdown');
+                if (dueDateCell && countdownSpan) {
+                    const countdown = calculateCountdown(dueDateCell.innerText);
+                    countdownSpan.textContent = countdown.text;
+                    countdownSpan.className = `countdown ${countdown.className}`;
+                }
+            });
+        }, 1000);
+
+        // --- START THE APP ---
+        main();
+    </script>
+</body>
+</html>
