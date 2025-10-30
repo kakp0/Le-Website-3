@@ -610,7 +610,8 @@
         </main>
         
         <footer class="footer">
-            <p>User ID: <span id="user-id"></span> | App ID: <span id="app-id"></span></p>
+            <p class="font-medium"><strong>Questions?</strong> Contact the NZ JET Officer at (04) 472-7807</p>
+            <p class="mt-2 text-xs text-gray-400">User ID: <span id="user-id"></span> | App ID: <span id="app-id"></span></p>
         </footer>
     </div>
 
@@ -644,12 +645,12 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'jet-nz-application-2026';
         // This is your actual Firebase configuration
         const firebaseConfig = {
-          apiKey: "AIzaSyD5Xqmc14gQ0EjciQGu-Mja6Ty5zreWh_M",
-          authDomain: "cgra-project.firebaseapp.com",
-          projectId: "cgra-project",
-          storageBucket: "cgra-project.firebasestorage.app",
-          messagingSenderId: "1035486354692",
-          appId: "1:1035486354692:web:74c6419f73c3efc1414451"
+         apiKey: "AIzaSyD5Xqmc14gQ0EjciQGu-Mja6Ty5zreWh_M",
+         authDomain: "cgra-project.firebaseapp.com",
+         projectId: "cgra-project",
+         storageBucket: "cgra-project.firebasestorage.app",
+         messagingSenderId: "1035486354692",
+         appId: "1:1035486354692:web:74c6419f73c3efc1414451"
         };
         
         const app = initializeApp(firebaseConfig);
@@ -672,54 +673,57 @@
         // --- STATE ---
         let docRefToDelete = null;
 
-        // --- INITIAL DATA ---
+        // --- UPDATED INITIAL DATA ---
+        // This list is now based on your new text file
         const initialTasks = [
-            // --- Week 1: Foundation & Outreach (Due by Friday, 24 Oct 2025) ---
-            { task: '📖 Thoroughly re-read the entire 2026 JET Application Guidelines PDF.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 0 },
-            { task: '👥 Identify two suitable referees (one academic). Confirm their current contact details.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 1 },
-            { task: '📝 Draft a polite email to referees explaining the JET Programme, the letter requirements (hand-signed, on letterhead), and the deadline of Oct 31.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 2 },
-            { task: '📎 Attach your CV and draft Statement of Purpose to the referee email.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 3 },
-            { task: '📧 Send the drafted email to both of your chosen referees.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 4 },
-            { task: '📂 Create a dedicated folder on your computer for all digital JET documents.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-24', done: false, order: 5 },
-            { task: '🎓 Request official academic transcript from university (select both digital and physical delivery).', assignee: 'You', category: 'Official Docs', dueDate: '2025-10-24', done: false, order: 6 },
-            { task: '📜 Request official "Letter of Expected Graduation" from university department (must be on letterhead).', assignee: 'You', category: 'Official Docs', dueDate: '2025-10-24', done: false, order: 7 },
-            { task: '🚓 Apply for your "Full Record of Convictions" from the Ministry of Justice website.', assignee: 'You', category: 'Official Docs', dueDate: '2025-10-24', done: false, order: 8 },
-            { task: '✍️ Brainstorm and write the first full draft of your Statement of Purpose essay.', assignee: 'You', category: 'Essay', dueDate: '2025-10-26', done: false, order: 9 },
-
-            // --- Week 2: Document Finalization & Digital Submission (Due by Friday, 31 Oct 2025) ---
-            { task: '📨 Send a gentle follow-up email to referees if you have not heard back from them.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-28', done: false, order: 10 },
-            { task: '📍 Find a local Justice of the Peace (JP) and confirm their walk-in hours for next week.', assignee: 'You', category: 'Planning & Prep', dueDate: '2025-10-29', done: false, order: 11 },
-            { task: '🧐 Edit and refine your Statement of Purpose for content, clarity, and flow.', assignee: 'You', category: 'Essay', dueDate: '2025-10-29', done: false, order: 12 },
-            { task: '👀 Proofread the essay for spelling/grammar and ask a friend to review it.', assignee: 'You', category: 'Essay', dueDate: '2025-10-30', done: false, order: 13 },
-            { task: '✅ Finalize the essay, ensuring it meets ALL formatting requirements (A4, double-spaced, 12pt Times New Roman, max 2 pages).', assignee: 'You', category: 'Essay', dueDate: '2025-10-31', done: false, order: 14 },
-            { task: '💻 Fill out the Application Form & Medical Report PDFs in Adobe Reader. Double-check all fields.', assignee: 'You', category: 'Digital Submission', dueDate: '2025-10-31', done: false, order: 15 },
-            { task: '📤 Email the completed Application Form PDF to jet@wl.mofa.go.jp with the correct subject line.', assignee: 'You', category: 'Digital Submission', dueDate: '2025-10-31', done: false, order: 16 },
-            { task: '🔗 Share digital transcript/graduation docs via MyeQuals to jet@wl.mofa.go.jp (set NO EXPIRY date).', assignee: 'You', category: 'Digital Submission', dueDate: '2025-10-31', done: false, order: 17 },
-            { task: '📥 Wait for and file the email confirmation for your digital submission from the JET office.', assignee: 'You', category: 'Digital Submission', dueDate: '2025-10-31', done: false, order: 18 },
-
-            // --- Week 3: Physical Assembly & Final Submission (Due by Wednesday, 05 Nov 2025) ---
-            { task: '🤝 Collect the two original, hand-signed reference letters from your referees.', assignee: 'You', category: 'Physical Assembly', dueDate: '2025-11-03', done: false, order: 19 },
-            { task: '⚖️ Visit the JP to get certified copies of your Passport, JLPT cert, transcript, and graduation cert.', assignee: 'You', category: 'Physical Assembly', dueDate: '2025-11-03', done: false, order: 20 },
-            { task: '🖨️ Print all documents for your ONE ORIGINAL SET (signed forms, essay, printed digital docs).', assignee: 'You', category: 'Physical Assembly', dueDate: '2025-11-04', done: false, order: 21 },
-            { task: '📜 Lay out the complete ORIGINAL SET in the correct order specified on page 11 of the guidelines.', assignee: 'You', category: 'Physical Assembly', dueDate: '2025-11-04', done: false, order: 22 },
-            { task: '📠 Make THREE complete, single-sided, high-quality photocopies of the entire original set.', assignee: 'You', category: 'Physical Assembly', dueDate: '2025-11-04', done: false, order: 23 },
-            { task: '🖍️ Write "ORIGINAL" in red pen on the top-right corner of the original application form\'s first page.', assignee: 'You', category: 'Final Submission', dueDate: '2025-11-05', done: false, order: 24 },
-            { task: '📎 Fasten EACH of the four sets with a separate paper clip. DO NOT STAPLE.', assignee: 'You', category: 'Final Submission', dueDate: '2025-11-05', done: false, order: 25 },
-            { task: '📁 Purchase an L-shaped clear plastic folder and place all four clipped sets inside (original on top).', assignee: 'You', category: 'Final Submission', dueDate: '2025-11-05', done: false, order: 26 },
-            { task: '✈️ Courier or hand-deliver the completed application package to the Embassy of Japan in Wellington.', assignee: 'You', category: 'Final Submission', dueDate: '2025-11-05', done: false, order: 27 },
-            { task: '🎉 CELEBRATE! Your application is submitted. Wait for the final physical receipt email.', assignee: 'You', category: 'Final Submission', dueDate: '2025-11-05', done: false, order: 28 }
+            // Category: Collect Docs
+            { task: 'Letter of Reference Kelly', assignee: 'You', category: 'Collect Docs', dueDate: '', done: false, order: 0 },
+            { task: 'Letter of Reference Nishikawa', assignee: 'You', category: 'Collect Docs', dueDate: '', done: false, order: 1 },
+            { task: 'Academic Record', assignee: 'You', category: 'Collect Docs', dueDate: '', done: false, order: 2 },
+            { task: 'Letter of Degree Expected Completion', assignee: 'You', category: 'Collect Docs', dueDate: '', done: false, order: 3 },
+            { task: 'Completed JET Application Form', assignee: 'You', category: 'Collect Docs', dueDate: '', done: false, order: 4 },
+            { task: 'Statement of Purpose', assignee: 'You', category: 'Collect Docs', dueDate: '', done: false, order: 5 },
+            { task: 'Medical Form', assignee: 'You', category: 'Collect Docs', dueDate: '', done: false, order: 6 },
+            { task: 'Passport', assignee: 'You', category: 'Collect Docs', dueDate: '', done: false, order: 7 },
+            { task: 'JLPT N5 Certification', assignee: 'You', category: 'Collect Docs', dueDate: '', done: false, order: 8 },
+            
+            // Category: Print & Copy
+            { task: 'Letter of Reference Kelly x3', assignee: 'You', category: 'Print & Copy', dueDate: '', done: false, order: 9 },
+            { task: 'Letter of Reference Nishikawa x3', assignee: 'You', category: 'Print & Copy', dueDate: '', done: false, order: 10 },
+            { task: 'Academic Record x4', assignee: 'You', category: 'Print & Copy', dueDate: '', done: false, order: 11 },
+            { task: 'Letter of Degree Expected Completion x4', assignee: 'You', category: 'Print & Copy', dueDate: '', done: false, order: 12 },
+            { task: 'Completed JET Application Form x3', assignee: 'You', category: 'Print & Copy', dueDate: '', done: false, order: 13 },
+            { task: 'Statement of Purpose x3', assignee: 'You', category: 'Print & Copy', dueDate: '', done: false, order: 14 },
+            { task: 'Medical Form x3', assignee: 'You', category: 'Print & Copy', dueDate: '', done: false, order: 15 },
+            { task: 'Passport x4', assignee: 'You', category: 'Print & Copy', dueDate: '', done: false, order: 16 },
+            { task: 'JLPT N5 Certification x4', assignee: 'You', category: 'Print & Copy', dueDate: '', done: false, order: 17 },
+            
+            // Category: Go and Buy
+            { task: 'Nishikawa Gift Basket', assignee: 'You', category: 'Go and Buy', dueDate: '', done: false, order: 18 },
+            { task: 'Kelly Gift Basket', assignee: 'You', category: 'Go and Buy', dueDate: '', done: false, order: 19 },
+            { task: 'Paperclips', assignee: 'You', category: 'Go and Buy', dueDate: '', done: false, order: 20 },
+            { task: 'Clear Plastic L-shaped File Folder', assignee: 'You', category: 'Go and Buy', dueDate: '', done: false, order: 21 },
+            { task: 'Mailing Envelope', assignee: 'You', category: 'Go and Buy', dueDate: '', done: false, order: 22 },
+            
+            // Category: Get Signed By JP
+            { task: 'Academic Record x4 + Original', assignee: 'You', category: 'Get Signed By JP', dueDate: '', done: false, order: 23 },
+            { task: 'Letter of Degree Expected Completion x4 + Original', assignee: 'You', category: 'Get Signed By JP', dueDate: '', done: false, order: 24 },
+            { task: 'Passport x4 + Original', assignee: 'You', category: 'Get Signed By JP', dueDate: '', done: false, order: 25 },
+            { task: 'JLPT N5 Certification x4 + Original', assignee: 'You', category: 'Get Signed By JP', dueDate: '', done: false, order: 26 },
+            
+            // Category: Final Prep
+            { task: 'Hand Sign Original And 3 Copy Sets Of JET Application Form On Pages 7, 8, And 12', assignee: 'You', category: 'Final Prep', dueDate: '', done: false, order: 27 },
+            { task: 'Send digital Copy Of JET Application Form To "jet@wl.mofa.go.jp"', assignee: 'You', category: 'Final Prep', dueDate: '', done: false, order: 28 },
+            { task: 'Accumulate & Paperclip "ORIGINAL" Set', assignee: 'You', category: 'Final Prep', dueDate: '', done: false, order: 29 },
+            { task: 'Accumulate & Paperclip 3 "Copy" Sets', assignee: 'You', category: 'Final Prep', dueDate: '', done: false, order: 30 },
+            { task: 'Sign First Page of Original Completed JET Application Form (Top Right In Red "ORGINAL")', assignee: 'You', category: 'Final Prep', dueDate: '', done: false, order: 31 },
+            { task: 'Place All 4 Sets Inside Clear File, Original Set On Top', assignee: 'You', category: 'Final Prep', dueDate: '', done: false, order: 32 },
+            { task: 'Deliver In Person Sealed Package To Embassy', assignee: 'You', category: 'Final Prep', dueDate: '', done: false, order: 33 },
+            { task: 'Apply For Full Criminal Convictions History', assignee: 'You', category: 'Final Prep', dueDate: '', done: false, order: 34 }
         ];
 
 
         // --- HELPER FUNCTIONS ---
-        const getWeekNumber = (dateString) => {
-            if (!dateString) return null;
-            const startDate = new Date('2025-10-20'); // Monday of the first week
-            const taskDate = new Date(dateString + 'T12:00:00Z');
-            const diffTime = taskDate - startDate;
-            const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
-            return 1 + diffWeeks;
-        };
 
         /**
          * Checks if a given date falls within New Zealand Daylight Time (NZDT).
@@ -856,33 +860,38 @@
                 showToast("Application plan created successfully!", "info");
             }
             const q = query(tasksCollectionRef);
+            
+            // --- UPDATED SNAPSHOT LISTENER ---
             onSnapshot(q, (snapshot) => {
                 const tasks = [];
                 snapshot.forEach(doc => tasks.push({ id: doc.id, ...doc.data() }));
-                // Sort by due date (ascending). Tasks without a due date go to the bottom.
-                tasks.sort((a, b) => {
-                    if (!a.dueDate) return 1;
-                    if (!b.dueDate) return -1;
-                    return new Date(a.dueDate) - new Date(b.dueDate);
-                });
+                
+                // Sort by the 'order' field to maintain the checklist sequence
+                // This is crucial for drag-and-drop to work with the category grouping
+                tasks.sort((a, b) => a.order - b.order);
+                
                 renderTasks(tasks);
                 loader.classList.add('hidden');
                 mainContent.classList.remove('hidden');
             });
         }
         
+        // --- UPDATED RENDER FUNCTION ---
         function renderTasks(tasks) {
             taskTableBody.innerHTML = '';
-            let currentWeek = null;
+            let currentCategory = null; // Changed from currentWeek
+            
             tasks.forEach((task, index) => {
-                const taskWeek = getWeekNumber(task.dueDate);
-                if (taskWeek && taskWeek !== currentWeek) {
-                    currentWeek = taskWeek;
+                // Group by Category instead of Week
+                if (task.category && task.category !== currentCategory) {
+                    currentCategory = task.category;
                     const spacerTr = document.createElement('tr');
                     spacerTr.classList.add('week-spacer');
-                    spacerTr.innerHTML = `<td colspan="8">--- Week ${currentWeek}: Prep Phase ---</td>`;
+                    // Use the category name as the spacer text
+                    spacerTr.innerHTML = `<td colspan="8">${currentCategory}</td>`;
                     taskTableBody.appendChild(spacerTr);
                 }
+                
                 const tr = document.createElement('tr');
                 tr.dataset.id = task.id;
                 tr.draggable = true;
@@ -894,7 +903,8 @@
                 tr.style.animationDelay = `${index * 0.05}s`;
                 tr.style.animation = 'fadeIn 0.5s ease-out forwards';
                 
-                const countdown = calculateCountdown(task.dueDate);
+                // The existing countdown logic already handles empty due dates
+                const countdown = calculateCountdown(task.dueDate); 
                 const countdownHTML = task.done 
                     ? `<span class="countdown-done">DONE</span>`
                     : `<span class="countdown ${countdown.className}">${countdown.text}</span>`;
@@ -912,7 +922,7 @@
             });
         }
         
-        // --- EVENT LISTENERS ---
+        // --- EVENT LISTENERS (Unchanged) ---
         addTaskBtn.addEventListener('click', async () => {
              const tasksCollectionRef = collection(db, `/artifacts/${appId}/public/data/tasks`);
              const numTasks = taskTableBody.querySelectorAll('tr:not(.week-spacer)').length;
@@ -1000,7 +1010,7 @@
         });
 
 
-        // --- DRAG AND DROP LOGIC ---
+        // --- DRAG AND DROP LOGIC (Unchanged, now works with new 'order' sort) ---
         let draggedItem = null;
         taskTableBody.addEventListener('dragstart', e => {
             if(e.target.classList.contains('week-spacer')) { e.preventDefault(); return; }
